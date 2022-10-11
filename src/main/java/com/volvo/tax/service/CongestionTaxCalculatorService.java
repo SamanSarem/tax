@@ -52,7 +52,7 @@ public class CongestionTaxCalculatorService {
         Integer uncertainTax = 0;
 
         for (LocalDateTime dateTime : localDateTimes
-        ) {
+        ) {//TODO It's possible to break the loop for better performance in 60 SEK
             if (startOfTimeWindow == null) {
                 startOfTimeWindow = dateTime;
                 uncertainTax = getTollFee(dateTime);
@@ -67,7 +67,11 @@ public class CongestionTaxCalculatorService {
                 uncertainTax = getTollFee(dateTime);
             }
         }
-        return certainTax + uncertainTax;
+        var result=certainTax + uncertainTax;
+        if(result<60){
+            return result;
+        }
+        return 60;
     }
 
 }
