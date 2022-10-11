@@ -3,7 +3,6 @@ package com.volvo.tax.service;
 
 import com.volvo.tax.model.Vehicle;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,8 +31,8 @@ public class CongestionTaxCalculator {
 
         for (int i = 0; i < dates.length ; i++) {
             Date date = dates[i];
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
+            int nextFee = getTollFee(date, vehicle);
+            int tempFee = getTollFee(intervalStart, vehicle);
 
             long diffInMillies = date.getTime() - intervalStart.getTime();
             long minutes = diffInMillies/1000/60;
@@ -60,7 +59,7 @@ public class CongestionTaxCalculator {
         return tollFreeVehicles.containsKey(vehicleType);
     }
 
-    public int GetTollFee(Date date, Vehicle vehicle)
+    public int getTollFee(Date date, Vehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
