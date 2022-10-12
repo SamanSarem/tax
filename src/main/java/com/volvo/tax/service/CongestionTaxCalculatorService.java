@@ -56,7 +56,7 @@ public class CongestionTaxCalculatorService {
             if (startOfTimeWindow == null) {
                 startOfTimeWindow = dateTime;
                 uncertainTax = getTollFee(dateTime);
-            } else if (ChronoUnit.MINUTES.between(startOfTimeWindow, dateTime) < 30) {
+            } else if (ChronoUnit.MINUTES.between(startOfTimeWindow, dateTime) < 60) {
                 var fee = getTollFee(dateTime);
                 if (fee > uncertainTax) {
                     uncertainTax = fee;
