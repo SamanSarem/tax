@@ -67,8 +67,8 @@ public class CongestionTaxCalculatorService {
                 uncertainTax = getTollFee(dateTime);
             }
         }
-        var result=certainTax + uncertainTax;
-        if(result<60){
+        var result = certainTax + uncertainTax;
+        if (result < 60) {
             return result;
         }
         return 60;
