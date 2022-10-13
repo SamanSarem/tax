@@ -58,9 +58,11 @@ public class TimeTaxCalculator {//TODO the configuration should be place into a 
             if (minute < 30) {
                 return _15_00_15_29;
             } else return _15_30_16_59;
+        }else if (hour.equals(16)) {
+            return _15_30_16_59;
         } else if (hour.equals(17)) {
             return _17_00_17_59;
-        } else if (hour.equals(6)) {
+        } else if (hour.equals(18)) {
             if (minute < 30) {
                 return _18_00_18_29;
             } else return _18_30_05_59;
