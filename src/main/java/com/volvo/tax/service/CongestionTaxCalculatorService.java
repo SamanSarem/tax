@@ -10,7 +10,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -34,19 +36,24 @@ public class CongestionTaxCalculatorService {
         if (vehicleTaxCalculator.isExempt(vehicle)) {
             return 0;
         }
-        ConcurrentHashMap<LocalDate, List<LocalDateTime>> dailyReport = new ConcurrentHashMap<>();
+        Map<LocalDate, List<LocalDateTime>> dailyReport =toSortedDaily(dates);
+        return dailyReport.entrySet().stream()
+                .filter(localDateListEntry -> !dateTaxCalculator.isFreeOfChargeDay(localDateListEntry.getKey()))
+                .map(localDateListEntry -> calculateDailyTax(localDateListEntry.getValue()))
+                .reduce(0, (a, b) -> a + b);
+    }
+    private Map<LocalDate, List<LocalDateTime>> toSortedDaily(List<LocalDateTime> dates){
+        Map<LocalDate, List<LocalDateTime>> dailyReport =
+                new HashMap<>();
         dates.stream().sorted().forEach(localDateTime -> {
             LocalDate localdate = localDateTime.toLocalDate();
             dailyReport.putIfAbsent(localdate, new ArrayList<>());
             dailyReport.get(localdate).add(localDateTime);
         });
-        return dailyReport.entrySet().stream()
-                .filter(localDateListEntry -> !dateTaxCalculator.isFreeOfChargeDay(localDateListEntry.getKey()))//TODO test filter
-                .map(localDateListEntry -> calculateDailyTax(localDateListEntry.getValue()))
-                .reduce(0, (a, b) -> a + b);
+        return dailyReport;
     }
 
-    private Integer calculateDailyTax(List<LocalDateTime> localDateTimes) {
+    public Integer calculateDailyTax(List<LocalDateTime> localDateTimes) {
         LocalDateTime startOfTimeWindow = null;
         Integer certainTax = 0;
         Integer uncertainTax = 0;
