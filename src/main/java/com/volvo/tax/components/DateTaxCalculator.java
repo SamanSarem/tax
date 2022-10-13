@@ -27,7 +27,7 @@ public class DateTaxCalculator {
         holidayAndTheDayBefore=new HashSet<>();
         holidayAndTheDayBefore.addAll(taxConfig.getPublicHolidays());
         Set<LocalDate> daysBeforeHolidays = taxConfig.getPublicHolidays().stream().map(localDate -> localDate.minusDays(1)).collect(Collectors.toSet());
-        daysBeforeHolidays.addAll(daysBeforeHolidays);
+        holidayAndTheDayBefore.addAll(daysBeforeHolidays);
     }
 
     public DateTaxCalculator(TaxConfig taxConfig) {

@@ -10,4 +10,3 @@ create test class for tax calculator
 It was better to use LocalDateTime instead of Date, but I'll keep it to not rewrite codes.
 add public holidays to the config file
 I found that the previous code really messy, so I change the implementation.
-
